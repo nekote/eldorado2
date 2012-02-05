@@ -1,0 +1,106 @@
+<div class="info-left">
+  <span class="title">Chat</span>
+  <span class="detail" id="chatters"><%= render :partial => 'chatters' %></span>
+</div>
+<div class="clear"> </div>
+
+<% if logged_in? %>
+  <div class="info-left" style="width:100%;">
+    <% @message = Message.new unless @message %>
+    <% remote_form_for @message, :loading => "$('message_body').clear();" do |f| -%>
+    <%= f.text_field :body, :value => '', :autocomplete => "off", :style => "width:70%;" %>&nbsp; 
+    <%= submit_tag "Post" %>&nbsp; 
+    <%= link_to('Upload a New File', new_upload_path, :popup => ['height=530,width=820,status=1']) %>
+    <% end %>
+  </div>
+  <div class="clear"> </div>
+<% end %>
+
+<table cellspacing="0" class="messages-index">
+  <tbody id="messages-index">
+    <%= render :partial => 'messages' %>
+  </tbody>
+</table>
+
+<p id="messages-more" class="center">
+  <%= render :partial => 'more', :object => @last_message unless @messages.size < 50 %>
+</p>
+
+<script>
+jQkludge(document).ready(function(){
+  jQkludge('#message_body').focus();
+
+  var focus = true;
+  var count = 0;
+  var title = document.title;
+
+  jQkludge(window).focus(function() {
+    focus = true;
+    count = 0;
+    setTimeout(function () {
+      document.title = title;
+    }, 500);
+  });
+
+  jQkludge(window).blur(function() {
+    focus = false;
+  });
+
+  var pusher = new Pusher('558c123ff5b757fa50bf');  // TheEEStory
+  var channel = pusher.subscribe('TheEEStory');
+
+  channel.bind('public_chat', function(data) {
+    if (data.type == 'msg') {
+      var mbody = data.message;
+  <% if logged_in? %>
+      if (data.musr != <%= current_user.id %> ) {
+  <% end %>
+        var PCdate = new Date();
+        var x;
+        x = PCdate.getTimezoneOffset() * 60;
+        x += data.mutc + <%= Time.zone.now.utc_offset %>;
+        x *= 1000;
+        PCdate = new Date(x);
+        PCdate = PCdate.strftime("%l:%M%p %d%b%y");
+        a = /<td class=\"tcr\">(^|.|\r|\n)*?<\/td>/;
+        g = '   <a href=/messages/' + data.mid;
+        h = '<td class=\"tcr\">\n' + g + '> ' + PCdate + '</a>\n ';
+    <% if logged_in? && admin? %>
+        h += g + ' target=\\"_blank\\"> ' + ' (x)' + '</a>\n ';
+    <% end %>
+        h += '</td>\n';
+        mbody = mbody.gsub(a,h);
+<% if logged_in? %>
+      }
+<% end %>
+      jQkludge('#messages-index').prepend(mbody);
+      if (focus == false) {
+        count++;
+        setTimeout(function () {
+          document.title = '(' + count + ') ' + title;
+        }, 500);
+      }
+    }
+    else if (data.type == 'subscription_succeeded') {
+    k = 1;
+    }
+    else if (data.type == 'member_added') {
+    k = 1;
+    }
+    else if (data.type == 'member_present') {
+    k = 1;
+    }
+    else if (data.type == 'tester_posted') {
+    k = 1;
+<% if [1799,1944,1945,1946,1947,1948].include?(current_user.id) %><% else %><% end %>
+    }
+    else if (data.type == 'member_removed') {
+    k = 1;
+    }
+    else if (data.type == 'subscription_closed') {
+    k = 1;
+    }
+  });
+});
+</script>
+<%= periodically_call_remote :url => refresh_chatters_path, :method => 'get', :frequency => 19 %>

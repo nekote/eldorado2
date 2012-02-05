@@ -1,0 +1,12 @@
+<tr id="message-<%= message2.id %>">
+  <td class="tcu"><%= message2.user %></td>
+  <td class="tcl"><%= bb(message2.body) %></td>
+  <td class="tcr">
+<% if admin?    # potential alternate presentation for admin, eliminating user '(x)'%>
+    <%= link_to time_stamp(message2.created_at, true), message2 %> 
+    <%= link_to '(x)', message2, :method => :delete, :confirm => 'Are you sure?' if can_edit?(message) %>
+<% else %>
+    <%= time_stamp(message2.created_at, true) %>
+<% end %>
+  </td>
+</tr>

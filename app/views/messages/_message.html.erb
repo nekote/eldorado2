@@ -1,0 +1,12 @@
+<tr id="message-<%= message.id %>">
+  <td class="tcu"><%= message.user %></td>
+  <td class="tcl"><%= bb(message.body) %></td>
+  <td class="tcr">
+    <% if message.created_at.nil? %>
+<b>CREATED_AT NIL&nbsp;</b>
+    <% else %>
+      <%= link_to time_stamp(message.created_at, true), message %> 
+    <% end %>
+    <%= link_to '(x)', message, :method => :delete, :confirm => 'Are you sure?' if can_edit?(message) %>
+  </td>
+</tr>

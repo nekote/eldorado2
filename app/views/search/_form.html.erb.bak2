@@ -1,0 +1,53 @@
+<% form_tag search_path, :method => 'get', :id => 'search' do %>
+  <div id="search" class="box" id="box-search-form" <%= 'style="display:none;"' unless current_controller == 'search' %>>
+    <span class="top">Search</span>
+    <p>Chat and Posts searches currently use significant CPU resources. Please do NOT re-submit (re-click) prior to a response.
+<% if admin? %>
+  <% if params[:type] == 'users' || current_controller == 'users' %>
+  <% else %>
+    <table border="0"><th></th><tr><td>
+    <br>User name(s): <%= text_field_tag :lnames, params[:lnames], :id => :query, :style => "width:40%" %></td></tr>
+    <tr><td>(eg: eestorblog   ,   John Smith  ,Jones,Daniel R Plante)</td></tr><br></table>
+  <% end %>
+  <table border="0"><tr><th>Interval</th><th>Start Time - YYYY[-MM[-DD[ HH[:mm[:ss]]]]]</th>
+  <th>End Time (Currently both Times UTC)</th></td>
+    <tr><td><br><br><select id="interval" name="interval">
+      <% if params[:type] == 'users' || current_controller == 'users' %>
+        <option<%= ' selected="selected"' if params[:interval] == 'all' %> value='all'>All</option>
+      <% end %>
+      <option<%= ' selected="selected"' if params[:interval] == '1' %> value='1'>Past 1 day</option>
+      <option<%= ' selected="selected"' if params[:interval] == '3' %> value='3'>Past 3 days</option>
+      <option<%= ' selected="selected"' if params[:interval] == '7' %> value='7'>Past 7 days</option>
+      <option<%= ' selected="selected"' if params[:interval] == '30' %> value='30'>Past 30 days</option>
+      <option<%= ' selected="selected"' if params[:interval] == '90' %> value='90'>Past 90 days</option>
+      <option<%= ' selected="selected"' if params[:interval] == '365' %> value='365'>Past 365 days</option>
+      <% if !(params[:type] == 'users' || current_controller == 'users') %>
+        <option<%= ' selected="selected"' if params[:interval] == 'all' %> value='all'>All</option>
+      <% end %>
+    </select> &nbsp;</td>
+  <td border="0" title="Start Time - YYYY[-MM[-DD[ HH[:mm[:ss]]]]]">
+  <%= text_field_tag :start_time, params[:start_time], :id => :query, :style => "width:100%" %></td>
+  <td border="0" title="End Time - YYYY[-MM[-DD[ HH[:mm[:ss]]]]]">
+  <%= text_field_tag :end_time, params[:end_time], :id => :query, :style => "width:100%" %></td>
+  </tr><br><br>
+  </table>
+<% else %>
+<% end %>
+  <select id="type" name="type">
+    <option<%= ' selected="selected"' if params[:type] == 'articles' || current_controller == 'articles' %> value='articles'>Articles</option>
+    <option<%= ' selected="selected"' if params[:type] == 'avatars' || current_controller == 'avatars' %> value='avatars'>Avatars</option>
+    <option<%= ' selected="selected"' if params[:type] == 'messages' || current_controller == 'messages' %> value='messages'>Chat</option>
+    <option<%= ' selected="selected"' if params[:type] == 'events' || current_controller == 'events' %> value='events'>Events</option>
+    <option<%= ' selected="selected"' if %w(uploads files).include?(params[:type]) || current_controller == 'uploads' %> value='files'>Files</option>
+    <option<%= ' selected="selected"' if params[:type] == 'headers' || current_controller == 'headers' %> value='headers'>Headers</option>
+    <option<%= ' selected="selected"' if params[:type] == 'posts' || current_controller == 'posts' %> value='posts'>Posts</option>
+    <option<%= ' selected="selected"' if %w(home categories forums topics).include?(params[:type]) || params[:type].blank? %> value='topics'>Topics</option>
+    <option<%= ' selected="selected"' if params[:type] == 'users' || current_controller == 'users' %> value='users'>Users</option>
+  </select> &nbsp;
+  <%= text_field_tag :query, params[:query], :id => :query, :style => "width:33%" %><% if admin? %> &nbsp;(%% for all)<% end %>
+  </p>
+  <p><%= submit_tag "Search", :disable_with => "Search" %>&nbsp;
+  <%= link_to 'Cancel', root_path %></p>
+</div>
+<% end %>
+<%= javascript_tag "$('query').focus();" %>

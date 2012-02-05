@@ -1,0 +1,3 @@
+<% for message2 in @messages %>
+  <%= render :partial => 'messages/message2', :object => message2   # alternate possibility to eliminate user '(x)'%>
+<% end %>

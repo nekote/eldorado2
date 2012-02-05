@@ -1,0 +1,9 @@
+log/
+tmp/
+*.log
+*.tmp
+*.propose.delete
+/public/avatars/*
+/public/files/*
+/public/headers/*
+

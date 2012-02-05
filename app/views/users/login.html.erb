@@ -1,0 +1,22 @@
+<%= error_messages_for :user %>
+<% @user = User.new %>
+<% form_for @user, :url => login_path do |f| %>
+  <div class="box" id="box-users-login">
+    <span class="top">Login</span>
+    <p class="label"><label for="user_login">Username</label></p>
+    <p><%= f.text_field :login, :style => "width:30%" %></p>
+    <p class="label"><label for="user_password">Password</label></p>
+    <p><%= f.password_field :password, :style => "width:30%" %></p>
+    <p><%= check_box_tag(:confirm) %><label for="confirm">
+&nbsp;By logging in, I agree to and will abide by both<br />
+the <a href=../files/ToS.html>TOS (Terms of Service)</a>
+and the <a href=../files/Privacy.html>Privacy Policy</a>.<br />
+Links are also available at the bottom of every web page.</label></p>
+    <p>
+      <%= submit_tag "Login", :disable_with => "Login" %>&nbsp;
+      <%= link_to 'Cancel', root_path %>
+    </p>
+  </div>
+<% end %>
+
+<%= javascript_tag "$('user_login').focus();" %>

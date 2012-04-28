@@ -16,16 +16,16 @@ test:
 # This "secret" must be a random string, at least 30 characters long, and kept secret for security
 production:
   adapter: mysql
-  database: eestory_ed
-  username: eestory_ed
-  password: kPFgt5fKQe9Z
-  host: ocsrs-2370.ocsservers.com
-  session_key: theeestory
+  database: rebates2_eestory
+  username: rebates2_nekote
+  password: nikki-5026+tsuYako
+  host: localhost
+  session_key: test2eldorado
   secret: bogj40gj3-49bk384ji3n4igj3o4jgvloeirnvoeirmboernb9999bcvnmzic
 
-  pusher_app_id: 5290
-  pusher_key: 558c123ff5b757fa50bf
-  pusher_secret: 3b8557c777ac565a0350
+  pusher_app_id: 19295
+  pusher_key: e7ab7412b8fbfd87b9cc
+  pusher_secret: 8206b531a4522c284ca2
 
 import:
   adapter: mysql

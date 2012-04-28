@@ -6,4 +6,6 @@ tmp/
 /public/avatars/*
 /public/files/*
 /public/headers/*
-
+/config/database.yml
+/config/config.yml
+/config/smtp.yml

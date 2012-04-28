@@ -9,9 +9,9 @@ class MessagesController < ApplicationController
     @messages = Message.get(session[:online_at])
     current_user.update_attribute('chatting_at', Time.now.utc) if logged_in?
 
-      Pusher.app_id = '5290'
-      Pusher.key = '558c123ff5b757fa50bf'
-      Pusher.secret = '3b8557c777ac565a0350'
+      Pusher.app_id = '19295'
+      Pusher.key = 'e7ab7412b8fbfd87b9cc'
+      Pusher.secret = '8206b531a4522c284ca2'
       if [1799,1944,1945,1946,1947,1948].include?(current_user.id)
         Pusher['TheEEStory'].trigger('public_chat', 
         { :type => 'member_present', :logged_in => 1, 
@@ -33,9 +33,9 @@ class MessagesController < ApplicationController
   def create
     @message = current_user.messages.build(params[:message])
     if @message.save
-      Pusher.app_id = '5290'
-      Pusher.key = '558c123ff5b757fa50bf'
-      Pusher.secret = '3b8557c777ac565a0350'
+      Pusher.app_id = '19295'
+      Pusher.key = 'e7ab7412b8fbfd87b9cc'
+      Pusher.secret = '8206b531a4522c284ca2'
       Pusher['TheEEStory'].trigger('public_chat', 
       { :message => (render :partial => @message), :musr => @message.user_id, 
         :mid => @message.id, :mutc => @message.created_at.to_i,
